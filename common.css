@@ -1,0 +1,36 @@
+body {
+font: 400 105%/1.4 "Work Sans", sans-serif;
+background: #efefef;
+color: #222;
+margin: 3em auto;
+max-width: 60em;
+width: 80%;
+}
+a {display: block;}
+a:link,
+a:visited {
+color: #2b7a82;
+}
+
+a:hover {
+color: #1e565c;
+}
+
+a:focus {
+box-shadow: none;
+outline-offset: 2px;
+outline: 3px solid #2b7a82;
+}
+
+a:focus {
+border-bottom: none;
+}
+
+a:active {
+background: #333;
+color: #fff;
+}
+
+
+table {border-collapse: collapse;}
+th,td {padding: 10px;border:2px solid #2b7a82;}
