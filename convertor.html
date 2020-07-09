@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../common.css">
+  <title>Convert WCAG 2.0 Document References to 2.1 Equivalents</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, shrink-to-fit=no">
+  <link rel="stylesheet" href="common.css">
+</head>
+
+<body>
+  <main>
+    <h1>Convert WCAG 2.0 Document References to 2.1 Equivalents</h1>
+    <form>
+      <div class="row">
+        <label for="txtOriginalText">Document with old WCAG 2.0 references</label>
+        <div><textarea cols="80" rows="20" id="txtOriginalText"></textarea></div>
+      </div>
+      <div class="row">
+        <button type="button" id="btnUpdate">Update to 2.1 References</button>
+      </div>
+      <div class="row">
+        <label for="txtUpdatedText">Updated document with 2.1 references</label>
+        <div><textarea cols="80" rows="20" id="txtUpdatedText"></textarea></div>
+      </div>
+    </form>
+    <h2>Mapping tables</h2>
+    <ul>
+        <li><a href="wcag-2.0-and-2.1-SC-equivalents---table.html">WCAG 2.0 and 2.1 SC Equivalents</a></li>
+        <li><a href="wcag-2.0-and-2.1-Understanding-equivalents---table.html">WCAG 2.0 and 2.1Understanding Equivalents</a></li>
+    </ul>
+  </main>
+</body>
+<script>
+  var oldDocTextarea = document.querySelector("#txtOriginalText");
+  var newDocTextarea = document.querySelector("#txtUpdatedText");
+  var btnUpdate = document.querySelector("#btnUpdate");
+
+  btnUpdate.addEventListener("click", function () {
+    updateRefs();
+  });
+
+  function replaceAll(string, search, replace) {
+    return string.split(search).join(replace);
+  }
+
+  function updateRefs() {
+
+    var oldDoc = oldDocTextarea.value;
+    var newDoc = oldDoc;
+
+    var WCAGMappings = [
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast7.html","https://www.w3.org/WAI/WCAG21/Understanding/contrast-enhanced.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast.html","https://www.w3.org/WAI/WCAG21/Understanding/distinguishable.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-without-color.html","https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-visual-presentation.html","https://www.w3.org/WAI/WCAG21/Understanding/visual-presentation.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-text-presentation.html","https://www.w3.org/WAI/WCAG21/Understanding/images-of-text.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-text-images.html","https://www.w3.org/WAI/WCAG21/Understanding/images-of-text-no-exception.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html","https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-noaudio.html","https://www.w3.org/WAI/WCAG21/Understanding/low-or-no-background-audio.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-dis-audio.html","https://www.w3.org/WAI/WCAG21/Understanding/audio-control.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html","https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits.html","https://www.w3.org/WAI/WCAG21/Understanding/enough-time.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-server-timeout.html","https://www.w3.org/WAI/WCAG21/Understanding/re-authenticating.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-required-behaviors.html","https://www.w3.org/WAI/WCAG21/Understanding/timing-adjustable.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-postponed.html","https://www.w3.org/WAI/WCAG21/Understanding/interruptions.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-pause.html","https://www.w3.org/WAI/WCAG21/Understanding/pause-stop-hide.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-no-exceptions.html","https://www.w3.org/WAI/WCAG21/Understanding/no-timing.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/text-equiv.html","https://www.w3.org/WAI/WCAG21/Understanding/text-alternatives.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/text-equiv-all.html","https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/seizure.html","https://www.w3.org/WAI/WCAG21/Understanding/seizures-and-physical-reactions.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/seizure-three-times.html","https://www.w3.org/WAI/WCAG21/Understanding/three-flashes.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/seizure-does-not-violate.html","https://www.w3.org/WAI/WCAG21/Understanding/three-flashes-or-below-threshold.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms.html","https://www.w3.org/WAI/WCAG21/Understanding/navigable.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-title.html","https://www.w3.org/WAI/WCAG21/Understanding/page-titled.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-skip.html","https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-refs.html","https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-in-context.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-mult-loc.html","https://www.w3.org/WAI/WCAG21/Understanding/multiple-ways.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-location.html","https://www.w3.org/WAI/WCAG21/Understanding/location.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-link.html","https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-link-only.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-headings.html","https://www.w3.org/WAI/WCAG21/Understanding/section-headings.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-focus-visible.html","https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-focus-order.html","https://www.w3.org/WAI/WCAG21/Understanding/focus-order.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-descriptive.html","https://www.w3.org/WAI/WCAG21/Understanding/headings-and-labels.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error.html","https://www.w3.org/WAI/WCAG21/Understanding/input-assistance.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-suggestions.html","https://www.w3.org/WAI/WCAG21/Understanding/error-suggestion.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-reversible.html","https://www.w3.org/WAI/WCAG21/Understanding/error-prevention-legal-financial-data.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-reversible-all.html","https://www.w3.org/WAI/WCAG21/Understanding/error-prevention-all.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-identified.html","https://www.w3.org/WAI/WCAG21/Understanding/error-identification.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-cues.html","https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-context-help.html","https://www.w3.org/WAI/WCAG21/Understanding/help.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv.html","https://www.w3.org/WAI/WCAG21/Understanding/time-based-media.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-text-doc.html","https://www.w3.org/WAI/WCAG21/Understanding/media-alternative-prerecorded.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-sign.html","https://www.w3.org/WAI/WCAG21/Understanding/sign-language-prerecorded.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-real-time-captions.html","https://www.w3.org/WAI/WCAG21/Understanding/captions-live.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-live-audio-only.html","https://www.w3.org/WAI/WCAG21/Understanding/audio-only-live.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-extended-ad.html","https://www.w3.org/WAI/WCAG21/Understanding/extended-audio-description-prerecorded.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-captions.html","https://www.w3.org/WAI/WCAG21/Understanding/captions-prerecorded.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html","https://www.w3.org/WAI/WCAG21/Understanding/audio-only-and-video-only-prerecorded.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-audio-desc.html","https://www.w3.org/WAI/WCAG21/Understanding/audio-description-or-media-alternative-prerecorded.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-audio-desc-only.html","https://www.w3.org/WAI/WCAG21/Understanding/audio-description-prerecorded.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning.html","https://www.w3.org/WAI/WCAG21/Understanding/readable.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-supplements.html","https://www.w3.org/WAI/WCAG21/Understanding/reading-level.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-pronunciation.html","https://www.w3.org/WAI/WCAG21/Understanding/pronunciation.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-other-lang-id.html","https://www.w3.org/WAI/WCAG21/Understanding/language-of-parts.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-located.html","https://www.w3.org/WAI/WCAG21/Understanding/abbreviations.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-idioms.html","https://www.w3.org/WAI/WCAG21/Understanding/unusual-words.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-doc-lang-id.html","https://www.w3.org/WAI/WCAG21/Understanding/language-of-page.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/keyboard-operation.html","https://www.w3.org/WAI/WCAG21/Understanding/keyboard-accessible.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/keyboard-operation-trapping.html","https://www.w3.org/WAI/WCAG21/Understanding/no-keyboard-trap.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/keyboard-operation-keyboard-operable.html","https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/keyboard-operation-all-funcs.html","https://www.w3.org/WAI/WCAG21/Understanding/keyboard-no-exception.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/ensure-compat.html","https://www.w3.org/WAI/WCAG21/Understanding/compatible.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/ensure-compat-rsv.html","https://www.w3.org/WAI/WCAG21/Understanding/name-role-value.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/ensure-compat-parses.html","https://www.w3.org/WAI/WCAG21/Understanding/parsing.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation.html","https://www.w3.org/WAI/WCAG21/Understanding/adaptable.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-understanding.html","https://www.w3.org/WAI/WCAG21/Understanding/sensory-characteristics.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-sequence.html","https://www.w3.org/WAI/WCAG21/Understanding/meaningful-sequence.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html","https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior.html","https://www.w3.org/WAI/WCAG21/Understanding/predictable.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-unpredictable-change.html","https://www.w3.org/WAI/WCAG21/Understanding/on-input.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-receive-focus.html","https://www.w3.org/WAI/WCAG21/Understanding/on-focus.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-no-extreme-changes-context.html","https://www.w3.org/WAI/WCAG21/Understanding/change-on-request.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-consistent-locations.html","https://www.w3.org/WAI/WCAG21/Understanding/consistent-navigation.html"],
+      ["https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-consistent-functionality.html","https://www.w3.org/WAI/WCAG21/Understanding/consistent-identification.html"],
+      ["http://www.w3.org/WAI/WCAG20/quickref/#qr-visual-audio-contrast-visual-presentation", "https://www.w3.org/TR/WCAG21/#visual-presentation"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast7", "https://www.w3.org/TR/WCAG21/#contrast-enhanced"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast-without-color", "https://www.w3.org/TR/WCAG21/#use-of-color"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast-text-presentation", "https://www.w3.org/TR/WCAG21/#images-of-text"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast-text-images", "https://www.w3.org/TR/WCAG21/#images-of-text-no-exception"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast-scale", "https://www.w3.org/TR/WCAG21/#resize-text"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast-noaudio", "https://www.w3.org/TR/WCAG21/#low-or-no-background-audio"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast-dis-audio", "https://www.w3.org/TR/WCAG21/#audio-control"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast", "https://www.w3.org/TR/WCAG21/#contrast-minimum"],
+      ["http://www.w3.org/TR/WCAG20/#visual-audio-contrast", "https://www.w3.org/TR/WCAG21/#distinguishable"],
+      ["http://www.w3.org/TR/WCAG20/#time-limits-server-timeout", "https://www.w3.org/TR/WCAG21/#re-authenticating"],
+      ["http://www.w3.org/TR/WCAG20/#time-limits-required-behaviors", "https://www.w3.org/TR/WCAG21/#timing-adjustable"],
+      ["http://www.w3.org/TR/WCAG20/#time-limits-postponed", "https://www.w3.org/TR/WCAG21/#interruptions"],
+      ["http://www.w3.org/TR/WCAG20/#time-limits-pause", "https://www.w3.org/TR/WCAG21/#pause-stop-hide"],
+      ["http://www.w3.org/TR/WCAG20/#time-limits-no-exceptions", "https://www.w3.org/TR/WCAG21/#no-timing"],
+      ["http://www.w3.org/TR/WCAG20/#time-limits", "https://www.w3.org/TR/WCAG21/#enough-time"],
+      ["http://www.w3.org/TR/WCAG20/#text-equiv-all", "https://www.w3.org/TR/WCAG21/#non-text-content"],
+      ["http://www.w3.org/TR/WCAG20/#seizure-three-times", "https://www.w3.org/TR/WCAG21/#three-flashes"],
+      ["http://www.w3.org/TR/WCAG20/#seizure-does-not-violate", "https://www.w3.org/TR/WCAG21/#three-flashes-or-below-threshold"],
+      ["http://www.w3.org/TR/WCAG20/#seizure", "https://www.w3.org/TR/WCAG21/#seizures-and-physical-reactions"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-title", "https://www.w3.org/TR/WCAG21/#page-titled"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-skip", "https://www.w3.org/TR/WCAG21/#bypass-blocks"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-refs", "https://www.w3.org/TR/WCAG21/#link-purpose-in-context"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-mult-loc", "https://www.w3.org/TR/WCAG21/#multiple-ways"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-location", "https://www.w3.org/TR/WCAG21/#location"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-link", "https://www.w3.org/TR/WCAG21/#link-purpose-link-only"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-headings", "https://www.w3.org/TR/WCAG21/#section-headings"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-focus-visible", "https://www.w3.org/TR/WCAG21/#focus-visible"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-focus-order", "https://www.w3.org/TR/WCAG21/#focus-order"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms-descriptive", "https://www.w3.org/TR/WCAG21/#headings-and-labels"],
+      ["http://www.w3.org/TR/WCAG20/#navigation-mechanisms", "https://www.w3.org/TR/WCAG21/#navigable"],
+      ["http://www.w3.org/TR/WCAG20/#minimize-error-suggestions", "https://www.w3.org/TR/WCAG21/#error-suggestion"],
+      ["http://www.w3.org/TR/WCAG20/#minimize-error-reversible-all", "https://www.w3.org/TR/WCAG21/#error-prevention-all"],
+      ["http://www.w3.org/TR/WCAG20/#minimize-error-reversible", "https://www.w3.org/TR/WCAG21/#error-prevention-legal-financial-data"],
+      ["http://www.w3.org/TR/WCAG20/#minimize-error-identified", "https://www.w3.org/TR/WCAG21/#error-identification"],
+      ["http://www.w3.org/TR/WCAG20/#minimize-error-cues", "https://www.w3.org/TR/WCAG21/#labels-or-instructions"],
+      ["http://www.w3.org/TR/WCAG20/#minimize-error-context-help", "https://www.w3.org/TR/WCAG21/#help"],
+      ["http://www.w3.org/TR/WCAG20/#minimize-error", "https://www.w3.org/TR/WCAG21/#input-assistance"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-text-doc", "https://www.w3.org/TR/WCAG21/#media-alternative-prerecorded"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-sign", "https://www.w3.org/TR/WCAG21/#sign-language-prerecorded"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-live-audio-only", "https://www.w3.org/TR/WCAG21/#audio-only-live"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-extended-ad", "https://www.w3.org/TR/WCAG21/#extended-audio-description-prerecorded"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-captions", "https://www.w3.org/TR/WCAG21/#captions-prerecorded"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-captions", "https://www.w3.org/TR/WCAG21/#captions-live"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-av-only-alt", "https://www.w3.org/TR/WCAG21/#audio-only-and-video-only-prerecorded"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-audio-desc-only", "https://www.w3.org/TR/WCAG21/#audio-description-prerecorded"],
+      ["http://www.w3.org/TR/WCAG20/#media-equiv-audio-desc", "https://www.w3.org/TR/WCAG21/#audio-description-or-media-alternative-prerecorded"],
+      ["http://www.w3.org/TR/WCAG20/#meaning-supplements", "https://www.w3.org/TR/WCAG21/#reading-level"],
+      ["http://www.w3.org/TR/WCAG20/#meaning-pronunciation", "https://www.w3.org/TR/WCAG21/#pronunciation"],
+      ["http://www.w3.org/TR/WCAG20/#meaning-other-lang-id", "https://www.w3.org/TR/WCAG21/#language-of-parts"],
+      ["http://www.w3.org/TR/WCAG20/#meaning-located", "https://www.w3.org/TR/WCAG21/#abbreviations"],
+      ["http://www.w3.org/TR/WCAG20/#meaning-idioms", "https://www.w3.org/TR/WCAG21/#unusual-words"],
+      ["http://www.w3.org/TR/WCAG20/#meaning-doc-lang-id", "https://www.w3.org/TR/WCAG21/#language-of-page"],
+      ["http://www.w3.org/TR/WCAG20/#meaning", "https://www.w3.org/TR/WCAG21/#readable"],
+      ["http://www.w3.org/TR/WCAG20/#keyboard-operation-trapping", "https://www.w3.org/TR/WCAG21/#no-keyboard-trap"],
+      ["http://www.w3.org/TR/WCAG20/#keyboard-operation-keyboard-operable", "https://www.w3.org/TR/WCAG21/#keyboard"],
+      ["http://www.w3.org/TR/WCAG20/#keyboard-operation-all-funcs", "https://www.w3.org/TR/WCAG21/#keyboard-no-exception"],
+      ["http://www.w3.org/TR/WCAG20/#keyboard-operation", "https://www.w3.org/TR/WCAG21/#keyboard-accessible"],
+      ["http://www.w3.org/TR/WCAG20/#ensure-compat-rsv", "https://www.w3.org/TR/WCAG21/#name-role-value"],
+      ["http://www.w3.org/TR/WCAG20/#ensure-compat-parses", "https://www.w3.org/TR/WCAG21/#parsing"],
+      ["http://www.w3.org/TR/WCAG20/#ensure-compat", "https://www.w3.org/TR/WCAG21/#compatible"],
+      ["http://www.w3.org/TR/WCAG20/#content-structure-separation-understanding", "https://www.w3.org/TR/WCAG21/#sensory-characteristics"],
+      ["http://www.w3.org/TR/WCAG20/#content-structure-separation-sequence", "https://www.w3.org/TR/WCAG21/#meaningful-sequence"],
+      ["http://www.w3.org/TR/WCAG20/#content-structure-separation-programmatic", "https://www.w3.org/TR/WCAG21/#info-and-relationships"],
+      ["http://www.w3.org/TR/WCAG20/#content-structure-separation", "https://www.w3.org/TR/WCAG21/#adaptable"],
+      ["http://www.w3.org/TR/WCAG20/#consistent-behavior-unpredictable-change", "https://www.w3.org/TR/WCAG21/#on-input"],
+      ["http://www.w3.org/TR/WCAG20/#consistent-behavior-receive-focus", "https://www.w3.org/TR/WCAG21/#on-focus"],
+      ["http://www.w3.org/TR/WCAG20/#consistent-behavior-no-extreme-changes-context", "https://www.w3.org/TR/WCAG21/#change-on-request"],
+      ["http://www.w3.org/TR/WCAG20/#consistent-behavior-consistent-locations", "https://www.w3.org/TR/WCAG21/#consistent-navigation"],
+      ["http://www.w3.org/TR/WCAG20/#consistent-behavior-consistent-functionality", "https://www.w3.org/TR/WCAG21/#consistent-identification"],
+      ["http://www.w3.org/TR/WCAG20/#consistent-behavior", "https://www.w3.org/TR/WCAG21/#predictable"],
+      ["http://www.w3.org/TR/WCAG/#understandable", "https://www.w3.org/TR/WCAG21/#understandable"],
+      ["http://www.w3.org/TR/WCAG/#text-equiv", "https://www.w3.org/TR/WCAG21/#text-alternatives"],
+      ["http://www.w3.org/TR/WCAG/#robust", "https://www.w3.org/TR/WCAG21/#robust"],
+      ["http://www.w3.org/TR/WCAG/#perceivable", "https://www.w3.org/TR/WCAG21/#perceivable"],
+      ["http://www.w3.org/TR/WCAG/#operable", "https://www.w3.org/TR/WCAG21/#operable"],
+      ["http://www.w3.org/TR/WCAG/#media-equiv", "https://www.w3.org/TR/WCAG21/#time-based-media"],
+      ["http://www.w3.org/TR/WCAG/", "https://www.w3.org/TR/WCAG21/"]
+    ];
+    WCAGMappings.forEach(WCAGMapping1 => {
+      newDoc = replaceAll(newDoc, WCAGMapping1[0], WCAGMapping1[1]);
+    });
+    newDocTextarea.value = newDoc;
+  }
+</script>
+
+</html>
